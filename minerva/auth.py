@@ -4,7 +4,7 @@ import urllib.parse
 import webbrowser
 from typing import Any
 
-from rich import console
+from minerva.console import console
 
 from minerva import __version__
 from minerva.constants import IS_DOCKER, TOKEN_FILE
