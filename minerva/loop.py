@@ -377,9 +377,14 @@ async def worker_loop(
 
             # 2. Try to connect to the WebSocket server, if it fails, wait 10s and try again
             log.info("Trying to connect to the coordinator server...")
+            if server.startswith("http://"):
+                websocket_endpoint = f"ws://{server.replace('http://', '')}{WORKER_ENDPOINT}"
+            else:
+                websocket_endpoint = f"wss://{server.replace('https://', '')}{WORKER_ENDPOINT}"
+
             try:
                 connection = await websockets.connect(
-                    f"wss://{server.replace('https://', '')}{WORKER_ENDPOINT}",
+                    websocket_endpoint,
                     open_timeout=CONNECTIVITY_CHECK_TIMEOUT * 3,
                     ping_interval=CONNECTIVITY_CHECK_TIMEOUT * 5,
                     ping_timeout=CONNECTIVITY_CHECK_TIMEOUT * 5,
